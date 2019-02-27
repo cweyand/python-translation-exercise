@@ -13,6 +13,11 @@ def translate_sequence(rna_sequence, genetic_code):
     If `rna_sequence` is less than 3 bases long, or starts with a stop codon,
     an empty string is returned.
     """
+    if rna_sequence < 3 and not ("UGA", "UGG"):
+        for rna_sequence in genetic_code:
+            print(value)
+    else:
+	    return ''
     pass
 
 def get_all_translations(rna_sequence, genetic_code):
@@ -30,6 +35,14 @@ def get_all_translations(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence`, an empty list is
     returned.
     """
+# can't figure out how to run this test.
+# test to see if code works
+    if rna_sequence >=3 and not ("UGA", "UAA", "UAG"):
+        for rna_sequence in genetic_code:
+            print(element, "-->", genetic_code[element])
+    else:
+            return ''
+
     pass
 
 def get_reverse(sequence):
@@ -39,6 +52,12 @@ def get_reverse(sequence):
 
     If `sequence` is empty, an empty string is returned.
     """
+    sequence = sequence.upper()
+    seq = ""
+    for i in sequence:
+        seq = i + seq
+    return seq
+
     pass
 
 def get_complement(sequence):
@@ -48,6 +67,9 @@ def get_complement(sequence):
 
     If `sequence` is empty, an empty string is returned.
     """
+    sequence = sequence.upper()
+    comp_code = {'C': 'G', 'G': 'C', 'A': 'U', 'U': 'A'}
+    return '' .join([comp_code[base] for base in sequence])
     pass
 
 def reverse_and_complement(sequence):
@@ -58,19 +80,30 @@ def reverse_and_complement(sequence):
 
     If `sequence` is empty, an empty string is returned.
     """
+    sequence = sequence.upper()
+    comp_code = {'C': 'G', 'G': 'C', 'A': 'U', 'U': 'A'}
+    return '' .join([comp_code[base] for base in sequence[::-1]])
     pass
 
 def get_longest_peptide(rna_sequence, genetic_code):
     """Get the longest peptide encoded by an RNA sequence.
 
     Explore six reading frames of `rna_sequence` (three reading frames of the
-    current orientation, and the reversed and complemented form) and return (as
-    a string) the longest sequence of amino acids that it encodes, according to
+    current orientation, and the reversed and complemented form) and return (as    a string) the longest sequence of amino acids that it encodes, according to
     the `genetic_code`.
 
     If no amino acids can be translated from `rna_sequence` nor its reverse and
     complement, an empty list is returned.
     """
+    reverse_comp_seq = reverse_comp(sequence = rna_sequence)
+    fwd_trans = get_all_translations(rna_sequence, genetic_code)
+    rvs_trans = get_all_translations(rna_sequence = reverse_comp_seq, genetic_code = genetic_code)
+    protein = fwd_trans + rvs_trans
+    if protein:
+        return max(protein, key=len)
+    else:
+        protein = ""
+        return protein
     pass
 
 
