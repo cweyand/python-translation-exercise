@@ -13,12 +13,19 @@ def translate_sequence(rna_sequence, genetic_code):
     If `rna_sequence` is less than 3 bases long, or starts with a stop codon,
     an empty string is returned.
     """
-    if rna_sequence < 3 and not ("UGA", "UGG"):
-        for rna_sequence in genetic_code:
-            print(value)
-    else:
-	    return ''
-    pass
+    rna_sequence = rna_sequence.upper()
+    amino_acid_list = []
+    while True:
+        if len(rna_sequence) < 3:
+            break
+        codon = rna_sequence[0:3]
+        remaining_seq = rna_sequence[3:]
+        rna_sequence = remaining_seq
+        aa = genetic_code[codon]
+        if aa == "*":
+            break
+        amino_acid_list.append(aa)
+    return "".join(amino_acid_list)
 
 def get_all_translations(rna_sequence, genetic_code):
     """Get a list of all amino acid sequences encoded by an RNA sequence.
@@ -35,15 +42,23 @@ def get_all_translations(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence`, an empty list is
     returned.
     """
-# can't figure out how to run this test.
-# test to see if code works
-    if rna_sequence >=3 and not ("UGA", "UAA", "UAG"):
-        for rna_sequence in genetic_code:
-            print(element, "-->", genetic_code[element])
-    else:
-            return ''
 
-    pass
+    rna_sequence = rna_sequence.upper()
+    num_bases = len(rna_sequence)
+    last_codon = num_bases - 3
+    if last_codon < 0:
+        return ('')
+    amino_acid_list = []
+    for base in range (last_codon + 1):
+        codon = rna_sequence[base: base + 3]
+        if codon =="AUG":
+            aminoacid_seq = translate_sequence(
+            rna_sequence = rna_sequence[base:],
+            genetic_code = genetic_code)
+            if aminoacid_seq:
+                amino_acid_list.append(aminoacid_seq)
+    return amino_acid_list
+
 
 def get_reverse(sequence):
     """Reverse orientation of `sequence`.
@@ -81,7 +96,7 @@ def reverse_and_complement(sequence):
     If `sequence` is empty, an empty string is returned.
     """
     sequence = sequence.upper()
-    comp_code = {'C': 'G', 'G': 'C', 'A': 'U', 'U': 'A'}
+    comp_code = {'C': 'G', 'G': 'C', 'A': 'U', 'U': 'A',}
     return '' .join([comp_code[base] for base in sequence[::-1]])
     pass
 
@@ -95,17 +110,7 @@ def get_longest_peptide(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence` nor its reverse and
     complement, an empty list is returned.
     """
-    reverse_comp_seq = reverse_comp(sequence = rna_sequence)
-    fwd_trans = get_all_translations(rna_sequence, genetic_code)
-    rvs_trans = get_all_translations(rna_sequence = reverse_comp_seq, genetic_code = genetic_code)
-    protein = fwd_trans + rvs_trans
-    if protein:
-        return max(protein, key=len)
-    else:
-        protein = ""
-        return protein
-    pass
-
+#incorrect coding. too many failures. rewrite.
 
 if __name__ == '__main__':
     genetic_code = {'GUC': 'V', 'ACC': 'T', 'GUA': 'V', 'GUG': 'V', 'ACU': 'T', 'AAC': 'N', 'CCU': 'P', 'UGG': 'W', 'AGC': 'S', 'AUC': 'I', 'CAU': 'H', 'AAU': 'N', 'AGU': 'S', 'GUU': 'V', 'CAC': 'H', 'ACG': 'T', 'CCG': 'P', 'CCA': 'P', 'ACA': 'T', 'CCC': 'P', 'UGU': 'C', 'GGU': 'G', 'UCU': 'S', 'GCG': 'A', 'UGC': 'C', 'CAG': 'Q', 'GAU': 'D', 'UAU': 'Y', 'CGG': 'R', 'UCG': 'S', 'AGG': 'R', 'GGG': 'G', 'UCC': 'S', 'UCA': 'S', 'UAA': '*', 'GGA': 'G', 'UAC': 'Y', 'GAC': 'D', 'UAG': '*', 'AUA': 'I', 'GCA': 'A', 'CUU': 'L', 'GGC': 'G', 'AUG': 'M', 'CUG': 'L', 'GAG': 'E', 'CUC': 'L', 'AGA': 'R', 'CUA': 'L', 'GCC': 'A', 'AAA': 'K', 'AAG': 'K', 'CAA': 'Q', 'UUU': 'F', 'CGU': 'R', 'CGC': 'R', 'CGA': 'R', 'GCU': 'A', 'GAA': 'E', 'AUU': 'I', 'UUG': 'L', 'UUA': 'L', 'UGA': '*', 'UUC': 'F'}
